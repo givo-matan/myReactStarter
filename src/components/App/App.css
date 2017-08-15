@@ -1,4 +1,7 @@
-.container {
+.wraper {
   max-width: var(--site-width);
   margin: 0 auto;
+}
+div {
+  color: blue;
 }

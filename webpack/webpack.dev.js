@@ -6,6 +6,7 @@ const srcDir = resolve(__dirname, '../src')
 
 module.exports = {
   entry: `${srcDir}/index.js`,
+  devtool: 'inline-source-map',
   output: {
     filename: 'bundle.js',
     publicPath: '/'
@@ -14,12 +15,7 @@ module.exports = {
     historyApiFallback: true
   },
   module: {
-    rules: [{
-      enforce: 'pre',
-      test: /\.js$/,
-      loader: 'standard-loader',
-      exclude: /node_modules/
-    }, {
+    rules: [ {
       test: /\.js$/,
       loader: 'babel-loader',
       exclude: /node_modules/
@@ -36,12 +32,6 @@ module.exports = {
         }
       }]
     }]
-  },
-  resolve: {
-    alias: {
-      react: 'preact-compat',
-      'react-dom': 'preact-compat'
-    }
   },
   plugins: [
     new HtmlWebpackPlugin({

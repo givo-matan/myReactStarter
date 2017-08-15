@@ -3,16 +3,17 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const DashboardPlugin = require('webpack-dashboard/plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const OfflinePlugin = require('offline-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
+process.traceDeprecation = true;
 
 module.exports = {
   context: resolve(__dirname, '../src'),
   entry: {
     app: `./index.js`,
-    vendor: ['react', 'react-dom', 'react-router']
+    vendor: ['react', 'react-dom', 'react-router','react-bootstrap']
   },
   output: {
     path: resolve(__dirname, '../dist'),
@@ -30,15 +31,6 @@ module.exports = {
     }]
   },
   devtool: 'source-map',
-  performance: {
-    hints: 'error'
-  },
-  resolve: {
-    alias: {
-      react: 'preact-compat',
-      'react-dom': 'preact-compat'
-    }
-  },
   plugins: [
     new CleanWebpackPlugin(['dist'], {
       root: resolve(__dirname, '..')
@@ -47,17 +39,13 @@ module.exports = {
       filename: 'styles.[chunkhash:6].css',
       allChunks: true
     }),
+    new UglifyJSPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: `./index.html`
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor'
-    }),
-    new CopyWebpackPlugin([{
-      from: resolve(__dirname, '../src/icons/'),
-      to: resolve(__dirname, '../dist/')
-    }]),
-    new OfflinePlugin()
+    })
   ]
 }
